@@ -15,6 +15,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    document.title = "FakeData | Serdar GÖLELİ";
     const getUser = async () => {
       const { data } = await axios.get("https://jsonplaceholder.typicode.com/users");
       dispatch(Actions.userActions.setUsers(data));
