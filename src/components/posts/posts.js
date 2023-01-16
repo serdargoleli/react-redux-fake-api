@@ -1,94 +1,84 @@
 import React, { useEffect, useState } from "react";
-import Actions from "../../redux/actions";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
-import PostHeader from "./postHeader";
 import PostCard from "./postCard";
-import { Col, Row, Modal, Card } from "react-bootstrap";
+import { Col, Row, ListGroup, Badge, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function Posts() {
-  const users = useSelector((state) => state.usersReducer);
-  let { userId } = useParams();
-  const [userPosts, setUserPosts] = useState([]);
-  const [userData, setUserData] = useState();
-  const [show, setShow] = useState(false);
-  const [comments, setComments] = useState([]);
-  const [selectedPost, setSelectedPost] = useState([]);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const postState = useSelector((state) => state.postsReducer);
+  const userState = useSelector((state) => state.usersReducer);
+  let [filteredPosts, setFilteredPosts] = useState([]);
 
-  const getPostComments = async (id) => {
-    const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}/comments`);
-    setComments(data);
+  const getUserData = (userId) => {
+    return userState.find((user) => user.id === userId);
   };
 
-  const getSelectedPost = (post) => {
-    setSelectedPost(post);
+  const filteredPost = (userId) => {
+    let filtered;
+    filtered = postState.posts.filter((post) => {
+      return post.userId == userId;
+    });
+    setFilteredPosts(filtered);
   };
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`);
-      setUserPosts(data);
-    };
-
-    const getUser = async () => {
-      const { data } = await axios.get(`https://jsonplaceholder.typicode.com/users/${userId}`);
-      setUserData(data);
-    };
-
-    if (users.length <= 0) {
-      getUser();
-    } else {
-      let user = users.find((user) => user.id == userId);
-      setUserData(user);
-    }
-
-    getPosts();
-  }, []);
+  const getCountPost = (userId) => {
+    let data = postState.posts.filter((post) => {
+      return post.userId == userId;
+    });
+    return data.length;
+  };
+  getCountPost(1);
 
   return (
-    <>
-      <PostHeader className={"mb-4"} userData={userData} userPostsLength={userPosts.length} />
-      <Row>
-        {userPosts.map((post) => (
-          <Col xs="12" md="6" key={post.id} className="mb-4">
-            <PostCard
-              getSelectedPost={getSelectedPost}
-              getPostComments={getPostComments}
-              selectedPost={selectedPost}
-              handleShow={handleShow}
-              className={"h-100"}
-              post={post}
-            />
-          </Col>
-        ))}
-      </Row>
-
-      <Modal show={show} onHide={handleClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {selectedPost.title}
-            <small>
-              <mark>COMMENTS</mark>
-            </small>
-          </Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          {comments.map((comment) => (
-            <Card className="mb-3">
-              <Card.Header>
-                <Card.Title> {comment.name} </Card.Title>
-                <Card.Subtitle>{comment.email} </Card.Subtitle>
-              </Card.Header>
-              <Card.Body> {comment.body} </Card.Body>
-            </Card>
+    <Row>
+      <Col xs="3">
+        <ListGroup className="position-sticky top-20">
+          {userState.map((user) => (
+            <ListGroup.Item
+              style={{ cursor: "pointer" }}
+              className="d-flex justify-content-between"
+              key={user.name}
+              active={filteredPosts.length ? filteredPosts[0].userId == user.id : ""}
+              onClick={() => filteredPost(user.id)}
+            >
+              {user.name}
+              <Badge bg="warning" text="dark">
+                {getCountPost(user.id)}
+              </Badge>
+            </ListGroup.Item>
           ))}
-        </Modal.Body>
-      </Modal>
-    </>
+        </ListGroup>
+      </Col>
+
+      <Col xs="9">
+        <Row>
+          <Col xs="12">
+            {filteredPosts.length > 0 && (
+              <div className="d-flex justify-content-between align-items-center">
+                <h1>
+                  {getUserData(filteredPosts[0].userId).name}{" "}
+                  <small className="text-muted">
+                    <i>Posts</i>
+                  </small>
+                </h1>
+                <Button onClick={() => setFilteredPosts([])}>Filreyi Kaldır</Button>
+              </div>
+            )}
+          </Col>
+          {filteredPosts.length <= 0
+            ? postState.posts.map((post) => (
+                <PostCard className={"mb-3"} key={post.id} post={post}>
+                  <Link to={`/user/${post.userId}/posts`}>{getUserData(post.userId).name}</Link>
+                </PostCard>
+              ))
+            : filteredPosts.map((post) => (
+                <PostCard className={"mb-3"} key={post.id} post={post}>
+                  <Link to={`/user/${post.userId}/posts`}>{getUserData(post.userId).name}</Link>
+                </PostCard>
+              ))}
+        </Row>
+      </Col>
+    </Row>
   );
 }

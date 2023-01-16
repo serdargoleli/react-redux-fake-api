@@ -1,13 +1,14 @@
 import * as ActionsTypes from "../actionsTypes";
 
-const posts = [];
+const postsState = {
+  posts: [],
+};
 
-const postsReducer = (state = posts, action) => {
+const postsReducer = (state = postsState, action) => {
   switch (action.type) {
-    case ActionsTypes.POSTS:
-      return state;
     case ActionsTypes.SET_POSTS:
-      return action.payload;
+      postsState.posts = action.payload;
+      return postsState;
     default:
       return state;
   }

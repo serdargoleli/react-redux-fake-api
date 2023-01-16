@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import Actions from "./redux/actions";
 import { Route, Routes } from "react-router-dom";
+import PostsDetails from "./components/posts/postsDetails";
 import Posts from "./components/posts/posts";
 import Navi from "./components/navi";
 import { Container } from "react-bootstrap";
@@ -18,8 +19,14 @@ function App() {
       const { data } = await axios.get("https://jsonplaceholder.typicode.com/users");
       dispatch(Actions.userActions.setUsers(data));
     };
+    const getPosts = async () => {
+      axios.get("https://jsonplaceholder.typicode.com/posts").then(({ data }) => {
+        dispatch(Actions.postsActions.setPosts(data));
+      });
+    };
 
     getUser();
+    getPosts();
   }, []);
 
   return (
@@ -28,7 +35,8 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<Users />} />
-          <Route path="/user/:userId/posts" element={<Posts />} />
+          <Route path="/user/:userId/posts" element={<PostsDetails />} />
+          <Route path="/posts" element={<Posts />} />
         </Routes>
       </Container>
     </div>

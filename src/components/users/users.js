@@ -1,28 +1,44 @@
 import React from "react";
 import { Card, ListGroup, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Actions from "../../redux/actions";
+import random from "random";
 
-function bgRandomwAvatar() {
-  let variants = [
-    "bulging",
-    "dizzy",
-    "eva",
-    "frame1",
-    "frame2",
-    "glow",
-    "happy",
-    "hearts",
-    "robocop",
-    "round",
-    "roundFrame01",
-    "roundFrame02",
-    "sensor",
-    "shade01",
-  ];
-  let selectedAvatar = Math.floor(Math.random() * variants.length);
-  return `https://api.dicebear.com/5.x/bottts-neutral/svg?eyes=${variants[selectedAvatar]}&seed=Speed`;
+const backgroundColor = ["b6e3f4", "c0aede", "d1d4f9", "ffd5dc", "ffdfbf"];
+const clothingColor = ["456dff", "54d7c7", "6dbb58", "7555ca", "e24553", "f3b63a", "f55d81"];
+const eyes = ["glasses", "happy", "open", "sleep", "sunglasses", "wink"];
+const facialHair = ["beardMustache", "goatee", "pyramid", "shadow", "soulPatch", "walrus"];
+const hair = [
+  "bald",
+  "balding",
+  "beanie",
+  "bobBangs",
+  "bobCut",
+  "bunUndercut",
+  "buzzcut",
+  "cap",
+  "curly",
+  "curlyBun",
+  "curlyHighTop",
+  "extraLong",
+  "fade",
+  "long",
+  "mohawk",
+  "pigtails",
+  "shortCombover",
+  "shortComboverChops",
+  "sideShave",
+  "straightBun",
+];
+function randomAvatar() {
+  let settingsUrl = "";
+  let mainUrl = `https://api.dicebear.com/5.x/personas/svg?seed=Aneka`;
+  settingsUrl += `&backgroundColor=${backgroundColor[random.int(backgroundColor.length - 1)]}`;
+  settingsUrl += `&clothingColor=${clothingColor[random.int(clothingColor.length - 1)]}`;
+  settingsUrl += `&eyes=${eyes[random.int(eyes.length - 1)]}`;
+  settingsUrl += `&facialHair=${facialHair[random.int(facialHair.length - 1)]}`;
+  settingsUrl += `&hair=${hair[random.int(hair.length - 1)]}`;
+  return mainUrl + settingsUrl;
 }
 
 export default function Posts() {
@@ -37,7 +53,7 @@ export default function Posts() {
               <Card.Body>
                 <Row>
                   <Col xs="3">
-                    <Card.Img src={bgRandomwAvatar()} />
+                    <Card.Img src={randomAvatar()} />
                   </Col>
                   <Col xs="9" className="d-flex justify-content-center flex-column">
                     <Card.Text className="mb-1">{user.username}</Card.Text>

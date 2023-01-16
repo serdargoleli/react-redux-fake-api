@@ -4,27 +4,22 @@ import { Link } from "react-router-dom";
 
 export default function Navi() {
   return (
-    <div>
-      <Navbar bg="dark" variant="dark" className="mb-4">
-        <Container>
-          <Navbar.Brand>
-            <Link className="nav-link" to={"/"}>
-              Sg 
-            </Link>
-          </Navbar.Brand>
-          <Nav className="ms-auto">
-            <Link className="nav-link" to={"/"}>
-              Github
-            </Link>
-            <Link className="nav-link" to={"/posts"}>
-              Github
-            </Link>
-            <Link className="nav-link" to={"/comments"}>
-              Github
-            </Link>
-          </Nav>
-        </Container>
-      </Navbar>
-    </div>
+    <Navbar bg="dark" sticky="top" variant="dark" className="mb-4 top-0 ">
+      <Container>
+        <Navbar.Brand>
+          <Link className="nav-link" to={"/"}>
+            SgFakeData | React-Redux
+          </Link>
+        </Navbar.Brand>
+        <Nav className="me-auto">
+          <Link className="nav-link" to={"/"}>
+            Users
+          </Link>
+          <Link className="nav-link" to={"/posts"}>
+            Posts
+          </Link>
+        </Nav>
+      </Container>
+    </Navbar>
   );
 }

@@ -1,9 +1,10 @@
 import * as ActionsTypes from "../actionsTypes";
 
-const setPost = (val) => {
+const setPosts = (val) => {
   return { type: ActionsTypes.SET_POSTS, payload: val };
 };
+ 
 
-const postActions = { setPost };
+const postActions = { setPosts };
 
 export default postActions;
