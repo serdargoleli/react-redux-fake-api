@@ -28,7 +28,6 @@ export default function Posts() {
     });
     return data.length;
   };
-  getCountPost(1);
 
   return (
     <Row>
