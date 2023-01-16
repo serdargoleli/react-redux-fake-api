@@ -1,6 +1,6 @@
 import React from "react";
-import random from "random";
 import { Badge, Card, Col, Row } from "react-bootstrap";
+import Actions from "../../redux/actions";
 
 export default function PostHeader(props) {
   return (
@@ -9,7 +9,7 @@ export default function PostHeader(props) {
         <Card.Body>
           <Row>
             <Col xs="3">
-              <Card.Img src="https://api.dicebear.com/5.x/personas/svg?seed=Felix" />
+              <Card.Img src={Actions.userActions.setUsersAvatar().payload} />
             </Col>
             <Col xs="9" className="d-flex flex-column align-items-baseline justify-content-center">
               <Badge className="p-2  " bg="success">
