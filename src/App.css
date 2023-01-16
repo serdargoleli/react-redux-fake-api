@@ -1,1 +1,14 @@
- 
+#root {
+  background: #4f4f4f0d;
+}
+.user-card-link {
+  color: inherit;
+}
+.user-card-link .card {
+  transition: all 0.3s;
+}
+.user-card-link:hover .card {
+  background-color: #fff;
+  box-shadow: 0 0 8px #00000048;
+  background-color: #ececec;
+}
