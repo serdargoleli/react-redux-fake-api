@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, ListGroup, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Actions from "../../redux/actions";
 
